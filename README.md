@@ -1,4 +1,4 @@
-# skype_clone
+# App Chat
 
 A new Flutter project.
 
