@@ -1,0 +1,3 @@
+const APP_ID = "ae82e43b4f7445658104d4f36848f6c6";
+const apiKey = "fa4d7655-6c01-4b06-a760-646ddacc9a2f";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJmYTRkNzY1NS02YzAxLTRiMDYtYTc2MC02NDZkZGFjYzlhMmYiLCJwZXJtaXNzaW9ucyI6WyJhbGxvd19qb2luIl0sImlhdCI6MTY2OTI3Mzc5MSwiZXhwIjoxNjY5ODc4NTkxfQ.3wqm7ucyVm21p9aycgPixiqlPOGxiKdAArQOazznzT8";
