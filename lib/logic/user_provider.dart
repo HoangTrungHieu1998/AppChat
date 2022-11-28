@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skype_clone/const.dart';
 import 'package:skype_clone/models/user.dart';
 import 'package:skype_clone/resources/auth_methods.dart';
 
@@ -12,6 +13,7 @@ class UserProvider with ChangeNotifier {
   Future<void> refreshUser() async {
     UserModel user = await authMethods.getUserDetails();
     _user = user;
+    Constant.displayName = user.name!;
     notifyListeners();
   }
 

@@ -115,10 +115,10 @@ class AuthMethods{
     return docs.isEmpty ? true:false;
   }
 
-  Future<void> addDataToDB (UserCredential user) async{
+  Future<void> addDataToDB ({required UserCredential user, String? username}) async{
     userModel = UserModel(
         uid: user.user?.uid,
-        name: user.user?.displayName ?? user.user?.email,
+        name: user.user?.displayName ?? username,
         email: user.user?.email,
         username: user.user?.email
     );

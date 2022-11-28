@@ -3,21 +3,30 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:skype_clone/const.dart';
+import 'package:skype_clone/models/history.dart';
+import 'package:skype_clone/models/log.dart';
 
 import '../models/call.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../models/user.dart';
 import '../utils/setting.dart';
 
 class CallMethods{
   final CollectionReference callCollection =
   FirebaseFirestore.instance.collection(Constant.callCollection);
+  final CollectionReference historyCollection =
+  FirebaseFirestore.instance.collection(Constant.historyCallCollection);
 
   Stream<DocumentSnapshot> callStream({String? uid}) =>
       callCollection.doc(uid).snapshots();
 
-  Future<bool> makeCall({Call? call}) async {
+  Stream<DocumentSnapshot> fetchHistoryCall({required String userId}) => historyCollection
+      .doc(userId)
+      .snapshots();
+
+  Future<bool> makeCall({Call? call,Log? log}) async {
     try {
       call!.hasDialled = true;
       Map<String, dynamic> hasDialledMap = call.toJson(call);
@@ -60,5 +69,47 @@ class CallMethods{
     );
 
     return json.decode(httpResponse.body)['token'];
+  }
+
+  Future<void> addHistoryCallToDb (Log log) async{
+    List<Log> list = [];
+    History history;
+    await historyCollection
+        .doc(log.callerId)
+        .get()
+        .then((DocumentSnapshot snapshot){
+          if(snapshot.exists){
+            if(snapshot.data()!=null){
+              final data = snapshot.data() as Map<String, dynamic>;
+              list.addAll(History.fromJson(data).history!);
+              list.add(log);
+              history = History(
+                history: list
+              );
+              FirebaseFirestore.instance
+                  .collection(Constant.historyCallCollection)
+                  .doc(log.callerId)
+                  .set(history.toJson());
+            }else{
+              list.add(log);
+              history = History(
+                  history: list
+              );
+              FirebaseFirestore.instance
+                  .collection(Constant.historyCallCollection)
+                  .doc(log.callerId)
+                  .set(history.toJson());
+            }
+          }else{
+            list.add(log);
+            history = History(
+                history: list
+            );
+            FirebaseFirestore.instance
+                .collection(Constant.historyCallCollection)
+                .doc(log.callerId)
+                .set(history.toJson());
+          }
+        });
   }
 }

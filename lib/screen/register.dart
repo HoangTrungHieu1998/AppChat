@@ -19,9 +19,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final AuthMethods authMethods = AuthMethods();
   final emailController = TextEditingController();
   final passController = TextEditingController();
+  final nameController = TextEditingController();
+
 
   String email = "";
   String password = "";
+  String name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +65,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             AppTextField(
               hint: "Full Name",
               icon: AppIcons.user,
+              controller: nameController,
+              onChange: (value){
+                name = value;
+              },
             ),
             const SizedBox(height: 12),
             AppTextField(
@@ -115,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void authentication(UserCredential user) {
     authMethods.authenticateUser(user).then((isNewUser){
       if(isNewUser){
-        authMethods.addDataToDB(user).then((value)
+        authMethods.addDataToDB(user:user,username: name).then((value)
         => Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen())));
       }else{
         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen()));

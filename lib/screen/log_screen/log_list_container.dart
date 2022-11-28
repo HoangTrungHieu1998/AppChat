@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skype_clone/component/app_theme.dart';
 import 'package:skype_clone/component/app_utils.dart';
 import 'package:skype_clone/component/custom_title.dart';
 import 'package:skype_clone/const.dart';
+import 'package:skype_clone/models/history.dart';
+import 'package:skype_clone/resources/call_methods.dart';
 
 import '../../component/cache_image.dart';
+import '../../logic/user_provider.dart';
 import '../../models/log.dart';
 import '../../resources/local_db/repository/log_repository.dart';
 import '../chat_screen/quite_box.dart';
@@ -17,6 +22,8 @@ class LogListContainer extends StatefulWidget {
 }
 
 class _LogListContainerState extends State<LogListContainer> {
+  final CallMethods callMethods = CallMethods();
+
   getIcon(String callStatus) {
     Icon _icon;
     double _iconSize = 15;
@@ -55,21 +62,28 @@ class _LogListContainerState extends State<LogListContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
-      future: LogRepository().getLogs(),
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    return StreamBuilder<DocumentSnapshot>(
+      stream: callMethods.fetchHistoryCall(
+        userId: userProvider.getUser!.uid!
+      ),
       builder: (BuildContext context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (snapshot.hasData) {
-          List<dynamic> logList = snapshot.data;
+        if (snapshot.hasData && snapshot.data!.data() !=null) {
+          History history = History.fromJson(snapshot.data!.data() as Map<String,dynamic>);
+          print("CHATDETAIL:${snapshot.data!.data()}");
 
-          if (logList.isNotEmpty) {
+          if (history.history!.isNotEmpty) {
+            var seen = <String>{};
+            history.history!.sort((a, b)=> DateTime.parse(b.timestamp!).compareTo(DateTime.parse(a.timestamp!)));
+            List<Log> listLog = history.history!.where((log) => seen.add(log.receiverId!)).toList();
             return ListView.builder(
-              itemCount: logList.length,
+              itemCount: listLog.length,
               itemBuilder: (context, i) {
-                Log _log = logList[i];
+                Log _log = listLog[i];
                 bool hasDialled = _log.callStatus == Constant.CALL_STATUS_DIALLED;
 
                 return CustomTitle(

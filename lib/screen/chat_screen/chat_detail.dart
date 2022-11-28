@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:skype_clone/component/app_theme.dart';
 import 'package:skype_clone/component/app_utils.dart';
 import 'package:skype_clone/const.dart';
+import 'package:skype_clone/models/log.dart';
 import 'package:skype_clone/models/message.dart';
 import 'package:skype_clone/models/user.dart';
 import 'package:skype_clone/resources/auth_methods.dart';
@@ -42,6 +43,8 @@ class _ChatDetailState extends State<ChatDetail> {
 
   FocusNode textFieldFocus = FocusNode();
 
+  Log? log;
+
   UserModel? sender;
   String? currentUserId;
   String? token;
@@ -56,6 +59,16 @@ class _ChatDetailState extends State<ChatDetail> {
     super.initState();
     getToken();
     setState(() {
+      log = Log(
+        callerName: Constant.displayName,
+        callerPic: authMethods.getCurrentUser()?.photoURL,
+        callStatus: Constant.CALL_STATUS_DIALLED,
+        receiverName: widget.receiver.name,
+        receiverPic: widget.receiver.profilePhoto,
+        timestamp: DateTime.now().toString(),
+        receiverId: widget.receiver.uid,
+        callerId: authMethods.getCurrentUser()?.uid
+      );
       currentUserId = authMethods.getCurrentUser()?.uid;
       sender = UserModel(uid: authMethods.getCurrentUser()?.uid, name: authMethods.getCurrentUser()?.displayName, profilePhoto: authMethods.getCurrentUser()?.photoURL);
     });
@@ -420,7 +433,7 @@ class _ChatDetailState extends State<ChatDetail> {
           icon: const Icon(
             Icons.video_call,
           ),
-          onPressed: () => CallUtils.dial(from: sender, to: widget.receiver, context: context,token: token!),
+          onPressed: () => CallUtils.dial(from: sender, to: widget.receiver, context: context,token: token!,log: log!),
         ),
         IconButton(
           icon: const Icon(

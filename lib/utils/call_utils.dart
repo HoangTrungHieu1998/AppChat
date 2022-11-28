@@ -13,7 +13,7 @@ import '../screen/call_screens/call_screen.dart';
 class CallUtils {
   static final CallMethods callMethods = CallMethods();
 
-  static dial({UserModel? from, UserModel? to, context,required String token}) async {
+  static dial({UserModel? from, UserModel? to, context,required String token,required Log log}) async {
     final channelID = await callMethods.createMeeting(token);
 
     Call call = Call(
@@ -26,23 +26,15 @@ class CallUtils {
       channelId: channelID.toString(),
     );
 
-    Log log = Log(
-      callerName: from.name,
-      callerPic: from.profilePhoto,
-      callStatus: Constant.CALL_STATUS_DIALLED,
-      receiverName: to.name,
-      receiverPic: to.profilePhoto,
-      timestamp: DateTime.now().toString(),
-    );
-
     bool callMade = await callMethods.makeCall(call: call);
 
     call.hasDialled = true;
 
+    callMethods.addHistoryCallToDb(log);
+
     if (callMade) {
 
       // Enter Log
-      LogRepository().addLogs(log);
 
       Navigator.push(
           context,

@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void authentication(UserCredential user) {
     authMethods.authenticateUser(user).then((isNewUser){
       if(isNewUser){
-        authMethods.addDataToDB(user).then((value)
+        authMethods.addDataToDB(user: user).then((value)
         => Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen())));
       }else{
         Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen()));

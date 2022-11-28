@@ -11,8 +11,11 @@ class Constant{
   static const String emailField = 'email';
   static const String imageMessage = 'image';
   static const String callCollection = 'call';
+  static const String historyCallCollection = 'historyCall';
   static const String contactCollection = 'contacts';
+  static const String listHistory = 'list_history';
   static const String CALL_STATUS_DIALLED = "dialled";
   static const String CALL_STATUS_RECEIVED = "received";
   static const String CALL_STATUS_MISSED = "missed";
+  static String displayName = "Guest";
 }
