@@ -122,7 +122,7 @@ class _ChatDetailState extends State<ChatDetail> {
                 )
               : Container(),
           chatControls(),
-          showEmojiPicker ? Container(child: emojiContainer()) : Container(),
+          showEmojiPicker ? SizedBox(height: 210,child: emojiContainer()) : Container(),
         ],
       ),
     );
@@ -137,6 +137,12 @@ class _ChatDetailState extends State<ChatDetail> {
         });
 
         textFieldController.text = textFieldController.text + emoji.emoji;
+      },
+      onBackspacePressed: () {
+        // Do something when the user taps the backspace button (optional)
+        setState(() {
+          isWriting = false;
+        });
       },
     );
   }

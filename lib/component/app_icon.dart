@@ -13,4 +13,5 @@ class AppIcons {
   static const IconData contact = Icons.contact_phone;
   static const IconData phone = Icons.call;
   static const IconData chat = Icons.chat;
+  static const IconData games = Icons.gamepad;
 }

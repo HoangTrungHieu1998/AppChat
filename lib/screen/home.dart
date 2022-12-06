@@ -10,6 +10,7 @@ import 'package:skype_clone/resources/auth_methods.dart';
 import 'package:skype_clone/resources/local_db/repository/log_repository.dart';
 import 'package:skype_clone/screen/call_screens/pickup/pickup_layout.dart';
 import 'package:skype_clone/screen/chat_screen/chat_screen.dart';
+import 'package:skype_clone/screen/game/game_screen.dart';
 import 'package:skype_clone/screen/log_screen/log_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -106,15 +107,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     return PickupLayout(
         scaffold: Scaffold(
           backgroundColor: AppThemes.blackColor,
-          body: PageView(
-            controller: pageController,
-            onPageChanged: onPageChange,
-            physics: const NeverScrollableScrollPhysics(),
-            children: const[
-              ChatScreen(),
-              LogScreen(),
-              Center(child: Text("Chat"),),
-            ],
+          body: SafeArea(
+            child: PageView(
+              controller: pageController,
+              onPageChanged: onPageChange,
+              physics: const NeverScrollableScrollPhysics(),
+              children: const[
+                ChatScreen(),
+                LogScreen(),
+                Center(child: Text("Chat"),),
+                GameScreen(),
+              ],
+            ),
           ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -134,6 +138,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 BottomNavigationBarItem(
                     icon: Icon(AppIcons.contact,color: _page==2 ? AppThemes.lightBlueColor:AppThemes.greyColor,),
                     label: "Contact"
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(AppIcons.games,color: _page==3 ? AppThemes.lightBlueColor:AppThemes.greyColor,),
+                    label: "Games"
                 ),
               ],
             ),

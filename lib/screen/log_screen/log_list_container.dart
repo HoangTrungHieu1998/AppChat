@@ -104,7 +104,7 @@ class _LogListContainerState extends State<LogListContainer> {
                           child: const Text("YES"),
                           onPressed: () async {
                             Navigator.maybePop(context);
-                            await LogRepository().deleteLogs(i);
+                            await callMethods.deleteHistoryCall(userProvider.getUser!.uid!, _log);
                             if (mounted) {
                               setState(() {});
                             }

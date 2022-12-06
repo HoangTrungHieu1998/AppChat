@@ -22,6 +22,12 @@ class AuthMethods{
     return _auth.currentUser;
   }
 
+  Future<void> updateAvatar(String userId,String image)async{
+    firestore.collection(Constant.userCollection)
+        .doc(userId)
+        .update({"profile_photo":image});
+  }
+
   Future<UserModel> getUserDetails() async {
     User? currentUser = getCurrentUser();
 

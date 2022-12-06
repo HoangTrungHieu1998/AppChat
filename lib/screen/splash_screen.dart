@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:skype_clone/component/app_theme.dart';
 import 'package:skype_clone/screen/home.dart';
 import 'package:skype_clone/screen/login.dart';
 
@@ -63,10 +66,35 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: AppThemes.blackNature,
       body: SafeArea(
-        child: Center(
-          child: Text("Welcome",style: TextStyle(fontSize: 40),),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: ListView(
+            children: [
+              const SizedBox(height: 50),
+              Image.asset(
+                "assets/images/company_logo.png",
+                height: 250,
+              ),
+              const SizedBox(height: 100),
+              Shimmer.fromColors(
+                  baseColor: Colors.green,
+                  highlightColor: Colors.red,
+                  child: const Text(
+                    "Pigeon",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 62,
+                    ),
+                  )
+              ),
+              const SizedBox(height: 100),
+              const SizedBox(height: 12),
+            ],
+          ),
         ),
       ),
     );

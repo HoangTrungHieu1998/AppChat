@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:skype_clone/resources/auth_methods.dart';
 import 'package:skype_clone/resources/chat_methods.dart';
 
 import '../logic/image_provider.dart';
@@ -15,6 +16,22 @@ class StorageMethods{
       _storageReference = FirebaseStorage.instance
           .ref()
           .child('${DateTime.now().millisecondsSinceEpoch}');
+      UploadTask storageUploadTask = _storageReference.putFile(imageFile);
+      var url = await (await storageUploadTask).ref.getDownloadURL();
+      // print(url);
+      return url;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  Future<String> uploadAvatarToStorage(File imageFile,String userId) async {
+    // mention try catch later on
+
+    try {
+      _storageReference = FirebaseStorage.instance
+          .ref()
+          .child(userId);
       UploadTask storageUploadTask = _storageReference.putFile(imageFile);
       var url = await (await storageUploadTask).ref.getDownloadURL();
       // print(url);
@@ -42,5 +59,24 @@ class StorageMethods{
     imageUploadProvider.setToIdle();
 
     chatMethods.setImageMsg(url, receiverId, senderId);
+  }
+
+  void uploadAvatar({
+    required File image,
+    required String userId,
+    required ImageUploadProvider imageUploadProvider
+  }) async {
+
+    final AuthMethods authMethods = AuthMethods();
+    // Set some loading value to db and show it to user
+    imageUploadProvider.setToLoading();
+
+    // Get url from the image bucket
+    String url = await uploadAvatarToStorage(image, userId);
+
+    // Hide loading
+    imageUploadProvider.setToIdle();
+
+    authMethods.updateAvatar(userId, url);
   }
 }

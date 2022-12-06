@@ -77,7 +77,7 @@ class CallMethods{
     await historyCollection
         .doc(log.callerId)
         .get()
-        .then((DocumentSnapshot snapshot){
+        .then((DocumentSnapshot snapshot)async{
           if(snapshot.exists){
             if(snapshot.data()!=null){
               final data = snapshot.data() as Map<String, dynamic>;
@@ -90,6 +90,7 @@ class CallMethods{
                   .collection(Constant.historyCallCollection)
                   .doc(log.callerId)
                   .set(history.toJson());
+              await addHistoryCallReceiverToDb(log);
             }else{
               list.add(log);
               history = History(
@@ -99,6 +100,7 @@ class CallMethods{
                   .collection(Constant.historyCallCollection)
                   .doc(log.callerId)
                   .set(history.toJson());
+              await addHistoryCallReceiverToDb(log);
             }
           }else{
             list.add(log);
@@ -109,6 +111,76 @@ class CallMethods{
                 .collection(Constant.historyCallCollection)
                 .doc(log.callerId)
                 .set(history.toJson());
+            await addHistoryCallReceiverToDb(log);
+          }
+        });
+  }
+
+  Future<void> addHistoryCallReceiverToDb (Log log) async{
+    List<Log> list = [];
+    History history;
+    await historyCollection
+        .doc(log.receiverId)
+        .get()
+        .then((DocumentSnapshot snapshot){
+          if(snapshot.exists){
+            if(snapshot.data()!=null){
+              final data = snapshot.data() as Map<String, dynamic>;
+              list.addAll(History.fromJson(data).history!);
+              list.add(log);
+              history = History(
+                history: list
+              );
+              FirebaseFirestore.instance
+                  .collection(Constant.historyCallCollection)
+                  .doc(log.receiverId)
+                  .set(history.toJson());
+            }else{
+              list.add(log);
+              history = History(
+                  history: list
+              );
+              FirebaseFirestore.instance
+                  .collection(Constant.historyCallCollection)
+                  .doc(log.receiverId)
+                  .set(history.toJson());
+            }
+          }else{
+            list.add(log);
+            history = History(
+                history: list
+            );
+            FirebaseFirestore.instance
+                .collection(Constant.historyCallCollection)
+                .doc(log.receiverId)
+                .set(history.toJson());
+          }
+        });
+  }
+
+  Future<void> deleteHistoryCall (String userID,Log log) async{
+    List<Log> list = [];
+    History history;
+    await historyCollection
+        .doc(userID)
+        .get()
+        .then((DocumentSnapshot snapshot){
+          if(snapshot.exists){
+            if(snapshot.data()!=null){
+              final data = snapshot.data() as Map<String, dynamic>;
+              list.addAll(History.fromJson(data).history!.where((element) => element.receiverId != log.receiverId).toList());
+              history = History(
+                history: list
+              );
+              FirebaseFirestore.instance
+                  .collection(Constant.historyCallCollection)
+                  .doc(userID)
+                  .set(history.toJson());
+            }else{
+              print("Can not delete because data is empty");
+            }
+          }else{
+           print("Can not delete because data null");
           }
         });
   }

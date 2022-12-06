@@ -5,6 +5,7 @@ class Constant{
   static const String senderId = '39321478176';
   static const String storageBucket = 'gs://skype-clone-7a1a8.appspot.com';
   static const String cacheImage = 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png';
+  static const String tictactoe = 'https://img.poki.com/cdn-cgi/image/quality=78,width=600,height=600,fit=cover,f=auto/85535e05d1f130b16751c8308cfbb19b.png';
   static const String timestampField = 'timestamp';
   static const String userCollection = 'users';
   static const String messageCollection = 'messages';

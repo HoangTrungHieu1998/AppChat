@@ -45,111 +45,114 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: ListView(
-          children: [
-            Image.asset(
-              "assets/images/skype.png",
-              height: 250,
-            ),
-            const Text(
-              "Login",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppThemes.colorHeader,
-                fontSize: 32,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: ListView(
+            children: [
+              Image.asset(
+                "assets/images/login.png",
+                height: 250,
               ),
-            ),
-            const SizedBox(height: 12),
-            AppTextField(
-              hint: "Email ID",
-              icon: AppIcons.email,
-              controller: emailController,
-              onChange: (value){
-                email = value;
-              },
-            ),
-            const SizedBox(height: 12),
-            AppTextField(
-              hint: "Password",
-              icon: AppIcons.lock,
-              controller: passController,
-              onChange: (value){
-                password = value;
-              },
-              helpContent: const Text(
-                "Forgot?",
-                style: TextStyle(fontSize: 16, color: AppThemes.colorPrimary),
-              ),
-              helpOnTap: () {},
-            ),
-            const SizedBox(height: 12),
-            RawMaterialButton(
-              fillColor: AppThemes.colorPrimary,
-              padding: const EdgeInsets.all(16),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(16),
-                ),
-              ),
-              onPressed: () => signInEmailPassword(),
-              child: const Text(
+              const Text(
                 "Login",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppThemes.colorHeader,
+                  fontSize: 32,
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              "Or, login with...",
-              style: TextStyle(color: Colors.black38),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  child: AppOutlineButton(
-                    asset: "assets/images/google.png",
-                    onTap: () => signInGoogle(),
+              const SizedBox(height: 12),
+              AppTextField(
+                hint: "Email ID",
+                icon: AppIcons.email,
+                controller: emailController,
+                onChange: (value){
+                  email = value;
+                },
+              ),
+              const SizedBox(height: 12),
+              AppTextField(
+                hint: "Password",
+                icon: AppIcons.lock,
+                controller: passController,
+                onChange: (value){
+                  password = value;
+                },
+                helpContent: const Text(
+                  "Forgot?",
+                  style: TextStyle(fontSize: 16, color: AppThemes.colorPrimary),
+                ),
+                helpOnTap: () {},
+              ),
+              const SizedBox(height: 12),
+              RawMaterialButton(
+                fillColor: AppThemes.colorPrimary,
+                padding: const EdgeInsets.all(16),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: AppOutlineButton(
-                    asset: "assets/images/facebook.png",
-                    onTap: () =>signInFacebook(),
-                  ),
+                onPressed: () => signInEmailPassword(),
+                child: const Text(
+                  "Login",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: AppOutlineButton(
-                    asset: "assets/images/apple.png",
-                    onTap: () {},
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Text.rich(
-              TextSpan(
-                text: "You don't have account? ",
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                "Or, login with...",
+                style: TextStyle(color: Colors.black38),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              Row(
                 children: [
-                  TextSpan(
-                    text: "Register",
-                    style: const TextStyle(
-                      color: AppThemes.colorPrimary,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: AppOutlineButton(
+                      asset: "assets/images/google.png",
+                      onTap: () => signInGoogle(),
                     ),
-                    recognizer: registerOnTap,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: AppOutlineButton(
+                      asset: "assets/images/facebook.png",
+                      onTap: () =>signInFacebook(),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: AppOutlineButton(
+                      asset: "assets/images/apple.png",
+                      onTap: () {},
+                    ),
                   ),
                 ],
               ),
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.black54),
-            )
-          ],
+              const SizedBox(height: 12),
+              Text.rich(
+                TextSpan(
+                  text: "You don't have account? ",
+                  children: [
+                    TextSpan(
+                      text: "Register",
+                      style: const TextStyle(
+                        color: AppThemes.colorPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      recognizer: registerOnTap,
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.black54),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
         ),
       ),
     );
